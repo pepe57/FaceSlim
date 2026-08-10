@@ -1,66 +1,8 @@
 # ROADMAP
 
-Backlog for FaceSlim. Keep the MediaPipe + BiSeNet backbone; expand model options, video export
-quality, and batch pipelines.
+Actionable work only. Historical and completed roadmap material is archived in CHANGELOG.md; blocked work is kept in Roadmap_Blocked.md.
 
-## Planned Features
-
-### Models
-
-### Editing features
-
-### Pipeline
-
-### Safety
-
-### Distribution
-
-## Competitive Research
-
-- **BeautyCam / Meitu / YouCam Perfect** — mobile apps with aggressive retouch presets and AR
-  makeup. Feature cues: one-tap presets, skin-tone sliders, AR makeup.
-- **Remini / Topaz Photo AI** — upscale + face-enhance pipelines. Borrow their superres stage as
-  an optional post step.
-- **Open-source `face-parsing.PyTorch` and `DECA`** — primary technical references for upgrades
-  noted above.
-- **Avatarify / Deep-Live-Cam** — real-time face manipulation frameworks; cues for low-latency
-  preview, while FaceSlim remains reshape-first rather than swap-first.
-
-## Nice-to-Haves
-
-- **Preset marketplace** — signed JSON presets with thumbnails, community upload.
-- **Photoshop plugin** via UXP that calls a local FaceSlim CLI for automation inside Photoshop
-  actions.
-- **Automatic preset suggestion** based on face shape analysis (oval / round / square / heart).
-- **Undo stack export** as a recipe file — replay an edit on a different photo.
-- **Timeline keyframes** for video — ramp sliders over time.
-
-## Open-Source Research (Round 2)
-
-### Related OSS Projects
-- **RetouchML** — https://github.com/ju-leon/RetouchML — StyleGAN2 latent-space beautification; face detected, normalized, then gradient-ascended toward a "prettier" attractiveness classifier.
-- **photo-enhancer (nuwandda)** — https://github.com/nuwandda/photo-enhancer — Wraps GFPGAN (faces) + RealESRGAN (background) in one pipeline; good reference for split face/bg processing.
-- **FaceEnhancementAndMakeup** — https://github.com/ZainabZaman/FaceEnhancementAndMakeup — DLIB landmarks for makeup + CodeFormer for face restoration.
-- **facefusion** — https://github.com/facefusion/facefusion — Industry-scale face manipulation platform; model zoo and pipeline graph are the takeaway.
-- **Awesome-Face-Restoration** — https://github.com/sczhou/Awesome-Face-Restoration — Curated index of face restoration papers/weights; treat as the SOTA tracker.
-- **GFPGAN** — https://github.com/TencentARC/GFPGAN — Canonical face-perfector GAN; still the baseline for skin-smooth + detail-preserve.
-- **CodeFormer** — https://github.com/sczhou/CodeFormer — Robust face restoration under heavy degradation; better than GFPGAN on blurry/low-res input.
-
-### Features to Borrow
-- Latent-space slimming slider from `RetouchML` — move along the StyleGAN2 "face width" direction instead of mesh-warping; preserves identity better than liquify.
-- Two-stage face/bg pipeline from `nuwandda/photo-enhancer` — segment face, enhance separately, alpha-composite back. Avoids background smoothing artifacts.
-- DLIB 68-point landmark gating from `FaceEnhancementAndMakeup` — run reshape only inside the face polygon; skip ears/hair.
-- Model-zoo selector like `facefusion` — let users pick between GFPGAN / CodeFormer / RestoreFormer at runtime.
-- CodeFormer's "fidelity weight" slider — user dial between strict identity preservation and aggressive restoration.
-- Batch CLI parity (`facefusion` style): every GUI operation also exposed as a CLI flag for headless runs.
-
-### Patterns & Architectures Worth Studying
-- **StyleGAN2 inversion + direction editing** (`RetouchML`): invert face → edit latent → regenerate. Cleaner for geometry edits than landmark warp.
-- **ONNX Runtime model-swap** (`facefusion`): ship models as ONNX, let users download alternates. Avoids PyTorch install footprint.
-- **Face-parsing mask composite**: BiSeNet face-parsing → per-region weight maps → blend restored face back into original pixels. Used by both `CodeFormer` and `GFPGAN` demos; prevents halo artifacts.
-- **Tile-based inference for >4K images** (`RealESRGAN`): split into overlapping tiles, process, seam-blend. Needed if users drop in DSLR RAWs.
-
-## Research-Driven Additions
+## Actionable Items
 
 - [ ] P0 - Verify downloaded model artifacts
   Why: Current model downloads only check minimum byte size, so corrupt or replaced weights can be accepted.
