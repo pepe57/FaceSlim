@@ -1,5 +1,10 @@
 # Changelog
 
+## FaceSlim v1.28.0 - 2026-08-12
+
+- Drained the active roadmap after verifying shipped coverage for model integrity, deterministic regression tests, structured render diagnostics, reproducible setup, export provenance, accessibility QA, media preflight, provider diagnostics, the dependency canary, model inventory, optional restoration/upscale, modular boundaries, and localization.
+- Repaired the local development environment with `tools/bootstrap_dev.py` and verified the 38-test suite, compile checks, CPU provider benchmark, Python 3.12 compatibility dry-run, and clean PyInstaller build.
+
 ## FaceSlim v1.27.0 - 2026-07-01
 
 - Fixed CLI batch processing where per-job params, max_faces, parser_model, and onnx_provider leaked between jobs — subsequent jobs inherited settings from earlier jobs when they lacked explicit overrides.
