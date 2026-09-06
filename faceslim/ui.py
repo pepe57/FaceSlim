@@ -7,7 +7,7 @@ import os
 import cv2
 import numpy as np
 from PyQt5.QtCore import QSettings, QTimer, Qt, pyqtSignal
-from PyQt5.QtGui import QColor, QCursor, QImage, QPalette, QPixmap
+from PyQt5.QtGui import QColor, QCursor, QIcon, QImage, QPalette, QPixmap
 from PyQt5.QtWidgets import (
     QAbstractItemView, QCheckBox, QComboBox, QDialog, QFileDialog, QFrame,
     QGridLayout, QGroupBox, QHBoxLayout, QHeaderView, QInputDialog, QLabel,
@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import (
 )
 
 from .i18n import tr
-from .runtime import VERSION
+from .runtime import APP_DIR, VERSION
 from .models import *
 from .pipeline import *
 from .exporters import (
@@ -30,7 +30,7 @@ class Toast(QLabel):
         super().__init__(parent)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setStyleSheet(
-            "background-color: rgba(49, 50, 68, 230); color: #cdd6f4; "
+            "background-color: rgba(16, 26, 45, 235); color: #e7eef9; "
             "border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: bold;")
         self.setFixedHeight(40)
         self.hide()
@@ -64,7 +64,7 @@ class ResponsibleUseDialog(QDialog):
         self.setFixedWidth(520)
         layout = QVBoxLayout(self)
         title = QLabel("Responsible Use")
-        title.setStyleSheet("font-size:18px; font-weight:bold; color:#89b4fa;")
+        title.setStyleSheet("font-size:18px; font-weight:bold; color:#67dbff;")
         layout.addWidget(title)
         body = QLabel(
             "Use FaceSlim only on media you own or have permission to edit. "
@@ -72,7 +72,7 @@ class ResponsibleUseDialog(QDialog):
             "Disclose altered media when context, platform rules, or local law requires it."
         )
         body.setWordWrap(True)
-        body.setStyleSheet("color:#cdd6f4; font-size:13px; line-height:1.35;")
+        body.setStyleSheet("color:#e7eef9; font-size:13px; line-height:1.35;")
         layout.addWidget(body)
         row = QHBoxLayout()
         row.addStretch()
@@ -101,7 +101,7 @@ class BatchQueueDialog(QDialog):
 
         layout = QVBoxLayout(self)
         self.summary = QLabel(f"Queued: {len(jobs)} files")
-        self.summary.setStyleSheet("color:#a6e3a1; font-size:12px; font-weight:bold;")
+        self.summary.setStyleSheet("color:#4dd9a6; font-size:12px; font-weight:bold;")
         layout.addWidget(self.summary)
 
         self.table = QTableWidget(len(jobs), 5)
@@ -198,50 +198,89 @@ class CompareVideoLabel(QLabel):
 # STYLESHEET
 # ═══════════════════════════════════════════════════════════════════════════
 DARK_STYLE = """
-QMainWindow, QWidget { background-color: #1e1e2e; color: #cdd6f4; font-family: 'Segoe UI', sans-serif; }
-QTabWidget::pane { border: 1px solid #45475a; background: #1e1e2e; border-radius: 4px; }
-QTabBar::tab { background: #181825; color: #6c7086; padding: 8px 18px; border-bottom: 2px solid transparent; }
-QTabBar::tab:selected { color: #cdd6f4; border-bottom-color: #89b4fa; }
-QTabBar::tab:hover { color: #bac2de; }
-QGroupBox { border: 1px solid #45475a; border-radius: 8px; margin-top: 1.2em;
-    padding: 12px 8px 8px 8px; font-weight: bold; color: #89b4fa; }
-QGroupBox::title { subcontrol-origin: margin; left: 12px; padding: 0 6px; color: #89b4fa; }
-QPushButton { background-color: #89b4fa; color: #1e1e2e; border: none;
-    padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 12px; }
-QPushButton:hover { background-color: #74c7ec; }
-QPushButton:pressed { background-color: #89dceb; }
-QPushButton:disabled { background-color: #45475a; color: #6c7086; }
-QPushButton[danger="true"] { background-color: #f38ba8; }
-QPushButton[danger="true"]:hover { background-color: #eba0ac; }
-QPushButton[success="true"] { background-color: #a6e3a1; color: #1e1e2e; }
-QPushButton[success="true"]:hover { background-color: #94e2d5; }
-QPushButton[secondary="true"] { background-color: #45475a; color: #cdd6f4; }
-QPushButton[secondary="true"]:hover { background-color: #585b70; }
-QPushButton:checked { background-color: #cba6f7; color: #1e1e2e; }
-QSlider::groove:horizontal { height: 6px; background: #313244; border-radius: 3px; }
-QSlider::handle:horizontal { background: #89b4fa; width: 18px; height: 18px; margin: -6px 0; border-radius: 9px; }
-QSlider::handle:horizontal:hover { background: #74c7ec; }
-QSlider::sub-page:horizontal { background: #89b4fa; border-radius: 3px; }
-QProgressBar { background-color: #313244; border: none; border-radius: 4px;
-    text-align: center; color: #cdd6f4; height: 20px; }
-QProgressBar::chunk { background-color: #89b4fa; border-radius: 4px; }
-QCheckBox { spacing: 8px; color: #cdd6f4; }
-QCheckBox::indicator { width: 18px; height: 18px; border: 2px solid #45475a; border-radius: 4px; background: #313244; }
-QCheckBox::indicator:checked { background: #89b4fa; border-color: #89b4fa; }
-QStatusBar { background-color: #181825; color: #6c7086; font-size: 11px; }
-QSpinBox { background-color: #313244; color: #cdd6f4; border: 1px solid #45475a;
-    border-radius: 4px; padding: 4px; }
-QComboBox { background-color: #313244; color: #cdd6f4; border: 1px solid #45475a;
-    border-radius: 4px; padding: 6px; }
+QMainWindow, QWidget {
+    background-color: #0b1220;
+    color: #e7eef9;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12px;
+}
+QToolTip { background-color: #17243b; color: #e7eef9; border: 1px solid #355071; padding: 6px; }
+QTabWidget::pane { border: 1px solid #263653; background: #0f192b; border-radius: 8px; }
+QTabBar::tab {
+    background: #080d18;
+    color: #8494ad;
+    padding: 10px 20px;
+    margin-right: 2px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom: 2px solid transparent;
+}
+QTabBar::tab:selected { background: #0f192b; color: #f4f8ff; border-bottom-color: #67dbff; }
+QTabBar::tab:hover { color: #c9d7eb; background: #121f35; }
+QGroupBox {
+    background-color: #101a2d;
+    border: 1px solid #263653;
+    border-radius: 10px;
+    margin-top: 1.2em;
+    padding: 13px 9px 9px 9px;
+    font-weight: 600;
+    color: #67dbff;
+}
+QGroupBox::title { subcontrol-origin: margin; left: 12px; padding: 0 6px; color: #67dbff; }
+QPushButton {
+    background-color: #5b8cff;
+    color: #07101f;
+    border: 1px solid #6d9aff;
+    padding: 9px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover { background-color: #70a0ff; border-color: #8bb2ff; }
+QPushButton:pressed { background-color: #4a7eea; }
+QPushButton:disabled { background-color: #1a263d; border-color: #263653; color: #66758e; }
+QPushButton[danger="true"] { background-color: #ff6b8f; border-color: #ff7e9d; color: #17070d; }
+QPushButton[danger="true"]:hover { background-color: #ff87a5; }
+QPushButton[success="true"] { background-color: #4dd9a6; border-color: #65e4b6; color: #061711; }
+QPushButton[success="true"]:hover { background-color: #6be5ba; }
+QPushButton[secondary="true"] { background-color: #1b2a45; border-color: #304664; color: #d9e4f4; }
+QPushButton[secondary="true"]:hover { background-color: #243957; border-color: #3d5a7a; }
+QPushButton:checked { background-color: #67dbff; border-color: #8be6ff; color: #06131c; }
+QPushButton[danger="true"]:disabled,
+QPushButton[success="true"]:disabled,
+QPushButton[secondary="true"]:disabled {
+    background-color: #1a263d;
+    border-color: #263653;
+    color: #66758e;
+}
+QSlider::groove:horizontal { height: 6px; background: #22314d; border-radius: 3px; }
+QSlider::handle:horizontal { background: #67dbff; width: 16px; height: 16px; margin: -5px 0; border-radius: 8px; }
+QSlider::handle:horizontal:hover { background: #8be6ff; }
+QSlider::sub-page:horizontal { background: #5b8cff; border-radius: 3px; }
+QProgressBar { background-color: #17243b; border: 1px solid #263653; border-radius: 4px;
+    text-align: center; color: #e7eef9; height: 20px; }
+QProgressBar::chunk { background-color: #5b8cff; border-radius: 3px; }
+QCheckBox { spacing: 8px; color: #d9e4f4; }
+QCheckBox::indicator { width: 17px; height: 17px; border: 2px solid #3a4c69; border-radius: 4px; background: #17243b; }
+QCheckBox::indicator:checked { background: #67dbff; border-color: #67dbff; }
+QStatusBar { background-color: #080d18; color: #8494ad; font-size: 11px; border-top: 1px solid #1e2b43; }
+QSpinBox, QComboBox {
+    background-color: #17243b;
+    color: #e7eef9;
+    border: 1px solid #304664;
+    border-radius: 5px;
+    padding: 6px;
+}
+QSpinBox:focus, QComboBox:focus { border-color: #67dbff; }
 QComboBox::drop-down { border: none; width: 24px; }
-QComboBox QAbstractItemView { background-color: #1e1e2e; color: #cdd6f4;
-    border: 1px solid #45475a; selection-background-color: #89b4fa; }
+QComboBox QAbstractItemView { background-color: #101a2d; color: #e7eef9;
+    border: 1px solid #304664; selection-background-color: #385d98; }
 QScrollArea { border: none; background: transparent; }
-QScrollBar:vertical { background: #181825; width: 8px; border: none; }
-QScrollBar::handle:vertical { background: #45475a; border-radius: 4px; min-height: 30px; }
-QScrollBar::handle:vertical:hover { background: #585b70; }
+QScrollBar:vertical { background: #080d18; width: 9px; border: none; }
+QScrollBar::handle:vertical { background: #304664; border-radius: 4px; min-height: 30px; }
+QScrollBar::handle:vertical:hover { background: #3d5a7a; }
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
-QFrame#separator { background-color: #45475a; max-height: 1px; }
+QFrame#separator { background-color: #263653; max-height: 1px; }
 """
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -249,13 +288,13 @@ QFrame#separator { background-color: #45475a; max-height: 1px; }
 # ═══════════════════════════════════════════════════════════════════════════
 INTERACTIVE_WIDGET_TYPES = (QPushButton, QSlider, QCheckBox, QComboBox, QSpinBox)
 ACCESSIBILITY_CONTRAST_PAIRS = [
-    ("Primary text on app background", "#cdd6f4", "#1e1e2e", 4.5),
-    ("Muted text on app background", "#bac2de", "#1e1e2e", 4.5),
-    ("Accent text on app background", "#89b4fa", "#1e1e2e", 4.5),
-    ("Primary button text", "#1e1e2e", "#89b4fa", 4.5),
-    ("Success button text", "#1e1e2e", "#a6e3a1", 4.5),
-    ("Danger button text", "#1e1e2e", "#f38ba8", 4.5),
-    ("Secondary button text", "#cdd6f4", "#45475a", 4.5),
+    ("Primary text on app background", "#e7eef9", "#0b1220", 4.5),
+    ("Muted text on app background", "#b8c5d8", "#0b1220", 4.5),
+    ("Accent text on app background", "#67dbff", "#0b1220", 4.5),
+    ("Primary button text", "#07101f", "#5b8cff", 4.5),
+    ("Success button text", "#061711", "#4dd9a6", 4.5),
+    ("Danger button text", "#17070d", "#ff6b8f", 4.5),
+    ("Secondary button text", "#d9e4f4", "#1b2a45", 4.5),
 ]
 
 
@@ -304,7 +343,10 @@ class FaceSlimApp(QMainWindow):
     def __init__(self, show_responsible_gate=True):
         super().__init__()
         self.setWindowTitle(f"{tr('FaceSlim')} v{VERSION}")
-        self.setMinimumSize(1150, 720); self.resize(1360, 800)
+        icon_path = os.path.join(APP_DIR, "icon.png")
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+        self.setMinimumSize(1150, 720); self.resize(1440, 860)
         self.setAcceptDrops(True)
         self.settings = QSettings("FaceSlim", "FaceSlim")
         self.video_thread = None
@@ -411,7 +453,7 @@ class FaceSlimApp(QMainWindow):
         name_label = QLabel(label)
         lr.addWidget(name_label); lr.addStretch()
         vl = QLabel(f"{default}%")
-        vl.setStyleSheet("color:#f9e2af; font-size:12px; font-weight:bold; min-width:36px;")
+        vl.setStyleSheet("color:#f2c66d; font-size:12px; font-weight:bold; min-width:36px;")
         lr.addWidget(vl); row.addLayout(lr)
         s = QSlider(Qt.Orientation.Horizontal); s.setRange(0, max_v); s.setValue(default)
         if tip: s.setToolTip(tip)
@@ -447,15 +489,33 @@ class FaceSlimApp(QMainWindow):
         # ── Left: Video ──
         left = QVBoxLayout(); left.setSpacing(8)
         hdr = QHBoxLayout()
+        brand_mark = QLabel()
+        brand_pixmap = QPixmap(os.path.join(APP_DIR, "icon.png"))
+        if not brand_pixmap.isNull():
+            brand_mark.setPixmap(brand_pixmap.scaled(
+                34, 34, Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation))
+        brand_mark.setFixedSize(36, 36)
+        hdr.addWidget(brand_mark)
+        brand_copy = QVBoxLayout(); brand_copy.setSpacing(0)
         t = QLabel(tr("FaceSlim"))
-        t.setStyleSheet("font-size: 20px; font-weight: bold; color: #89b4fa;")
-        hdr.addWidget(t)
+        t.setStyleSheet("font-size: 21px; font-weight: 700; color: #f4f8ff;")
+        brand_copy.addWidget(t)
+        subtitle = QLabel(tr("Local portrait refinement"))
+        subtitle.setStyleSheet("color: #8494ad; font-size: 10px;")
+        brand_copy.addWidget(subtitle)
+        hdr.addLayout(brand_copy)
         self.face_count_label = QLabel("")
-        self.face_count_label.setStyleSheet("color: #a6e3a1; font-size: 11px;")
+        self.face_count_label.setStyleSheet("color: #4dd9a6; font-size: 11px;")
         hdr.addWidget(self.face_count_label)
         hdr.addStretch()
+        local_badge = QLabel(tr("LOCAL PROCESSING"))
+        local_badge.setStyleSheet(
+            "color:#67dbff; background:#10283a; border:1px solid #24506a; "
+            "border-radius:6px; padding:4px 8px; font-size:9px; font-weight:700;")
+        hdr.addWidget(local_badge)
         self.fps_label = QLabel("-- FPS")
-        self.fps_label.setStyleSheet("color: #a6e3a1; font-size: 11px; font-weight: bold;")
+        self.fps_label.setStyleSheet("color: #4dd9a6; font-size: 11px; font-weight: 600;")
         hdr.addWidget(self.fps_label)
         left.addLayout(hdr)
 
@@ -464,14 +524,14 @@ class FaceSlimApp(QMainWindow):
         self.video_label.setMinimumSize(640, 480)
         self.video_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.video_label.setStyleSheet(
-            "background-color:#11111b; border:2px solid #313244; border-radius:8px; "
-            "color:#6c7086; font-size:14px;")
-        self.video_label.setText(tr("Drop a file here, or use the buttons below to start"))
+            "background-color:#060a12; border:1px solid #263653; border-radius:10px; "
+            "color:#8494ad; font-size:14px;")
+        self.video_label.setText(tr("Drop a portrait or video here\nor choose Load File to begin"))
         left.addWidget(self.video_label, 1)
 
         timeline_row = QHBoxLayout(); timeline_row.setSpacing(8)
         timeline_title = QLabel(tr("Timeline"))
-        timeline_title.setStyleSheet("color:#89b4fa; font-size:11px; font-weight:bold;")
+        timeline_title.setStyleSheet("color:#67dbff; font-size:11px; font-weight:600;")
         timeline_row.addWidget(timeline_title)
         self.timeline_slider = QSlider(Qt.Orientation.Horizontal)
         self.timeline_slider.setRange(0, 0)
@@ -481,7 +541,7 @@ class FaceSlimApp(QMainWindow):
         self.timeline_slider.sliderReleased.connect(self._timeline_released)
         timeline_row.addWidget(self.timeline_slider, 1)
         self.timeline_label = QLabel("--:-- / --:--")
-        self.timeline_label.setStyleSheet("color:#cdd6f4; font-size:11px; min-width:86px;")
+        self.timeline_label.setStyleSheet("color:#e7eef9; font-size:11px; min-width:86px;")
         timeline_row.addWidget(self.timeline_label)
         left.addLayout(timeline_row)
 
@@ -516,7 +576,7 @@ class FaceSlimApp(QMainWindow):
         root.addLayout(left, 3)
 
         # ── Right: Tabbed Controls ──
-        rw = QWidget(); rw.setMaximumWidth(370); rw.setMinimumWidth(300)
+        rw = QWidget(); rw.setMaximumWidth(395); rw.setMinimumWidth(330)
         rl = QVBoxLayout(rw); rl.setSpacing(0); rl.setContentsMargins(0,0,0,0)
 
         tabs = QTabWidget()
@@ -564,7 +624,7 @@ class FaceSlimApp(QMainWindow):
         parser_row.addWidget(self.combo_parser_model)
         g_bl.addLayout(parser_row)
         self.parsing_lbl = QLabel("")
-        self.parsing_lbl.setStyleSheet("color:#a6e3a1; font-size:10px;")
+        self.parsing_lbl.setStyleSheet("color:#4dd9a6; font-size:10px;")
         g_bl.addWidget(self.parsing_lbl)
         provider_row = QHBoxLayout()
         provider_row.addWidget(QLabel(tr("ONNX Provider:")))
@@ -580,7 +640,7 @@ class FaceSlimApp(QMainWindow):
         g_bl.addLayout(provider_row)
         self.provider_lbl = QLabel("")
         self.provider_lbl.setWordWrap(True)
-        self.provider_lbl.setStyleSheet("color:#bac2de; font-size:10px;")
+        self.provider_lbl.setStyleSheet("color:#b8c5d8; font-size:10px;")
         g_bl.addWidget(self.provider_lbl)
         model_row = QHBoxLayout()
         self.combo_model_redownload = QComboBox()
@@ -599,7 +659,7 @@ class FaceSlimApp(QMainWindow):
         g_bl.addLayout(model_row)
         self.model_inventory_lbl = QLabel("")
         self.model_inventory_lbl.setWordWrap(True)
-        self.model_inventory_lbl.setStyleSheet("color:#bac2de; font-size:10px;")
+        self.model_inventory_lbl.setStyleSheet("color:#b8c5d8; font-size:10px;")
         g_bl.addWidget(self.model_inventory_lbl)
         post_row = QHBoxLayout()
         post_row.addWidget(QLabel(tr("Post-Stage:")))
@@ -620,7 +680,7 @@ class FaceSlimApp(QMainWindow):
         g2 = QGroupBox(tr("Quality")); g2l = QVBoxLayout(g2); g2l.setSpacing(6)
         self._make_slider(g2l, 'smoothing', tr('Warp Smoothing'), default=50, tip='Displacement field smoothness')
         self._make_slider(g2l, 'temporal', tr('Temporal Stability'), default=50, tip='Landmark jitter reduction (higher=smoother)')
-        self._make_slider(g2l, 'bg_protect', tr('Background Protection'), default=70, tip='Prevents warping background - blends face region only')
+        self._make_slider(g2l, 'bg_protect', tr('Background Protection'), default=70, tip='Prevents background warping and blends only the face region')
         self._make_slider(g2l, 'matting_refine', tr('Matting Refine'), default=0, tip='MODNet portrait matte edge refinement for ROI warp masks')
 
         opts_row = QHBoxLayout()
@@ -712,7 +772,7 @@ class FaceSlimApp(QMainWindow):
         exp_opts.addWidget(self.combo_video_compare)
         g5l.addLayout(exp_opts)
         self.exp_prog = QProgressBar(); self.exp_prog.setVisible(False); g5l.addWidget(self.exp_prog)
-        self.exp_stat = QLabel(""); self.exp_stat.setStyleSheet("color:#6c7086; font-size:11px;")
+        self.exp_stat = QLabel(""); self.exp_stat.setStyleSheet("color:#8494ad; font-size:11px;")
         g5l.addWidget(self.exp_stat)
         t3.addWidget(g5)
 
@@ -729,7 +789,7 @@ class FaceSlimApp(QMainWindow):
         self.btn_batch_cancel.clicked.connect(self._cancel_batch); self.btn_batch_cancel.setEnabled(False)
         g6l.addWidget(self.btn_batch_cancel)
         self.batch_prog = QProgressBar(); self.batch_prog.setVisible(False); g6l.addWidget(self.batch_prog)
-        self.batch_stat = QLabel(""); self.batch_stat.setStyleSheet("color:#6c7086; font-size:11px;")
+        self.batch_stat = QLabel(""); self.batch_stat.setStyleSheet("color:#8494ad; font-size:11px;")
         g6l.addWidget(self.batch_stat)
         t3.addWidget(g6)
         t3.addStretch()
@@ -739,12 +799,12 @@ class FaceSlimApp(QMainWindow):
         root.addWidget(rw, 1)
 
         # Status bar
-        self.statusBar().showMessage(tr("Ready - Drop a file or use buttons to start"))
+        self.statusBar().showMessage(tr("Ready. Drop a file or use the controls to start."))
         gpu_text = f"{tr('GPU')}: {GPU_NAME}" if USE_GPU else tr("CPU Mode")
         gpu_label = QLabel(f"  {gpu_text}  ")
         gpu_label.setStyleSheet(
-            f"color: {'#a6e3a1' if USE_GPU else '#f9e2af'}; font-size: 11px; font-weight: bold; "
-            f"background-color: {'#1e3a2e' if USE_GPU else '#3a2e1e'}; border-radius: 4px; padding: 2px 8px;")
+            f"color: {'#4dd9a6' if USE_GPU else '#f2c66d'}; font-size: 11px; font-weight: bold; "
+            f"background-color: {'#10352e' if USE_GPU else '#3a2b13'}; border-radius: 4px; padding: 2px 8px;")
         self.statusBar().addPermanentWidget(gpu_label)
         self._apply_accessibility_metadata()
 
@@ -913,7 +973,7 @@ class FaceSlimApp(QMainWindow):
             f"  Face Parsing: {parser_model_label(key)}"
             + (" ready" if ready else " downloads on first use")
         )
-        self.parsing_lbl.setStyleSheet(f"color: {'#a6e3a1' if ready else '#f9e2af'}; font-size: 10px;")
+        self.parsing_lbl.setStyleSheet(f"color: {'#4dd9a6' if ready else '#f2c66d'}; font-size: 10px;")
         self._set_provider_status()
 
     def _set_provider_status(self, text=None):
@@ -1068,6 +1128,8 @@ class FaceSlimApp(QMainWindow):
             self.image_mode = True
             self.stop_video()
             self._load_image(path)
+            self.fps_label.setText(tr("STILL IMAGE"))
+            self.fps_label.setStyleSheet("color:#67dbff; font-size:11px; font-weight:600;")
             self.btn_exp_img.setEnabled(True)
             self.btn_exp_gif.setEnabled(True)
             self.btn_exp_video.setEnabled(False)
@@ -1182,13 +1244,13 @@ class FaceSlimApp(QMainWindow):
                          if self.chk_teeth_hint.isChecked() else proc)
             show = np.empty_like(proc_show)
             show[:, :sx] = orig[:, :sx]; show[:, sx:] = proc_show[:, sx:]
-            cv2.line(show, (sx, 0), (sx, h), (203, 166, 247), 3)
+            cv2.line(show, (sx, 0), (sx, h), (103, 219, 255), 3)
             cy = h // 2
-            cv2.fillPoly(show, [np.array([[sx-8,cy-12],[sx+8,cy-12],[sx+8,cy+12],[sx-8,cy+12]])], (203,166,247))
-            cv2.line(show, (sx, cy-8), (sx, cy+8), (30,30,46), 2)
-            for text, tx, color in [("Original", 10, (255,255,255)), ("Slimmed", sx+10, (137,180,250))]:
+            cv2.fillPoly(show, [np.array([[sx-8,cy-12],[sx+8,cy-12],[sx+8,cy+12],[sx-8,cy+12]])], (103,219,255))
+            cv2.line(show, (sx, cy-8), (sx, cy+8), (11,18,32), 2)
+            for text, tx, color in [("Original", 10, (255,255,255)), ("Slimmed", sx+10, (103,219,255))]:
                 (tw, th), _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)
-                cv2.rectangle(show, (tx-4, 10), (tx+tw+4, th+22), (30,30,46), -1)
+                cv2.rectangle(show, (tx-4, 10), (tx+tw+4, th+22), (11,18,32), -1)
                 cv2.putText(show, text, (tx, 28), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2, cv2.LINE_AA)
         else:
             show = (apply_teeth_hint_rois(proc, self.current_teeth_hint_rois)
@@ -1210,7 +1272,7 @@ class FaceSlimApp(QMainWindow):
         self.video_label.setPixmap(px)
 
     def _on_fps(self, fps):
-        c = "#a6e3a1" if fps >= 20 else "#f9e2af" if fps >= 10 else "#f38ba8"
+        c = "#4dd9a6" if fps >= 20 else "#f2c66d" if fps >= 10 else "#ff6b8f"
         self.fps_label.setText(f"{fps:.1f} FPS")
         self.fps_label.setStyleSheet(f"color:{c}; font-size:11px; font-weight:bold;")
 

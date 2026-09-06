@@ -84,6 +84,26 @@ class ModuleBoundaryTests(unittest.TestCase):
             self.assertTrue(hasattr(module, symbol), f"{module_name}.{symbol}")
 
 
+class CpuWarpTests(unittest.TestCase):
+    def test_non_divisible_frame_dimensions_preserve_output_shape(self):
+        engine = object.__new__(faceslim.FaceWarpEngine)
+        engine.grid_scale = 4
+        frame = np.zeros((65, 67, 3), dtype=np.uint8)
+        source = np.array([
+            [8, 8], [33, 8], [58, 8], [8, 32],
+            [58, 32], [8, 56], [33, 56], [58, 56],
+        ], dtype=np.float64)
+        target = source.copy()
+        target[3, 0] += 2
+        target[4, 0] -= 2
+
+        warped, maps = engine._warp_cpu(frame, source, target, {"smoothing": 50})
+
+        self.assertEqual(frame.shape, warped.shape)
+        self.assertEqual(frame.shape[:2], maps[0].shape)
+        self.assertEqual(frame.shape[:2], maps[1].shape)
+
+
 class ModelInventoryTests(unittest.TestCase):
     def test_model_paths_use_configured_model_directory(self):
         self.assertEqual(

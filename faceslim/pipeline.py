@@ -36,7 +36,7 @@ except Exception:
     USE_GPU = False
     DEVICE = None
     GPU_NAME = "CPU"
-    print("  PyTorch not available - using CPU mode (install torch for GPU acceleration)")
+    print("  PyTorch not available. CPU mode is active (install torch for GPU acceleration).")
 
 from .runtime import (
     APP_DIR, IMAGE_EXTS, IPTC_DIGITAL_SOURCE_TYPE, PRESETS_DIR, RENDER_LOG_PATH,
@@ -1780,8 +1780,8 @@ class FaceWarpEngine:
         disp = tgt - src
         smooth = max(0.1, params.get('smoothing', 50) / 100.0 * 50.0)
         sc = self.grid_scale
-        gh, gw = h // sc, w // sc
         gy, gx = np.mgrid[0:h:sc, 0:w:sc].astype(np.float64)
+        gh, gw = gy.shape
         gpts = np.column_stack([gx.ravel(), gy.ravel()])
         dx_s = RBFInterpolator(src, disp[:, 0], kernel='thin_plate_spline',
                                 smoothing=smooth)(gpts).reshape(gh, gw).astype(np.float32)

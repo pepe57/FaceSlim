@@ -61,7 +61,7 @@ def cli_process(args):
                                not args.strip_metadata, args.video_compare, parser_model,
                                onnx_provider)
 
-    print(f"\nFaceSlim v{VERSION} - CLI Mode")
+    print(f"\nFaceSlim v{VERSION} | CLI Mode")
     print(f"  GPU: {'ON (' + GPU_NAME + ')' if USE_GPU else 'OFF'}")
     print(f"  ONNX Provider: {onnx_provider_label(onnx_provider)}")
     print(f"  Post-stage: {post_stage_model_label(params.get('post_stage_model'))}")
@@ -201,7 +201,7 @@ def cli_process(args):
 def main():
     parser = argparse.ArgumentParser(
         prog='FaceSlim',
-        description=f"{tr('FaceSlim')} v{VERSION} - {tr('AI Face Slimming & Reshaping Suite')}",
+        description=f"{tr('FaceSlim')} v{VERSION} | {tr('AI Face Slimming & Reshaping Suite')}",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -280,7 +280,7 @@ Examples:
     args.onnx_provider = onnx_provider_key(args.onnx_provider or saved_provider)
 
     if args.list_presets:
-        print(f"\n{tr('FaceSlim')} v{VERSION} - {tr('Available Presets')}:\n")
+        print(f"\n{tr('FaceSlim')} v{VERSION} | {tr('Available Presets')}:\n")
         print(f"{tr('Built-in')}:")
         for name, vals in BUILT_IN_PRESETS.items():
             desc = ', '.join(f"{k}={v}" for k, v in vals.items() if v > 0)
@@ -294,12 +294,12 @@ Examples:
         sys.exit(0)
 
     if args.list_models:
-        print(f"\n{tr('FaceSlim')} v{VERSION} - {tr('Model Inventory')}\n")
+        print(f"\n{tr('FaceSlim')} v{VERSION} | {tr('Model Inventory')}\n")
         print(model_inventory_text(args.onnx_provider))
         sys.exit(0)
 
     if args.redownload_model:
-        print(f"\nFaceSlim v{VERSION} - Model Redownload\n")
+        print(f"\nFaceSlim v{VERSION} | Model Redownload\n")
         results = redownload_models(args.redownload_model)
         for key, ok in results.items():
             print(f"  {key}: {'OK' if ok else 'FAILED'}")
@@ -309,7 +309,7 @@ Examples:
         sys.exit(0)
 
     if args.provider_diagnostics:
-        print(f"\nFaceSlim v{VERSION} - ONNX Provider Diagnostics\n")
+        print(f"\nFaceSlim v{VERSION} | ONNX Provider Diagnostics\n")
         print(provider_diagnostics_text(
             args.onnx_provider, args.parser_model,
             run_benchmark=True, ensure_parser=True))
@@ -328,10 +328,10 @@ Examples:
         app = QApplication(sys.argv)
         app.setStyle("Fusion"); app.setStyleSheet(DARK_STYLE)
         pal = QPalette()
-        for role, col in [(QPalette.ColorRole.Window,"#1e1e2e"),(QPalette.ColorRole.WindowText,"#cdd6f4"),
-            (QPalette.ColorRole.Base,"#313244"),(QPalette.ColorRole.Text,"#cdd6f4"),
-            (QPalette.ColorRole.Button,"#313244"),(QPalette.ColorRole.ButtonText,"#cdd6f4"),
-            (QPalette.ColorRole.Highlight,"#89b4fa"),(QPalette.ColorRole.HighlightedText,"#1e1e2e")]:
+        for role, col in [(QPalette.ColorRole.Window,"#0b1220"),(QPalette.ColorRole.WindowText,"#e7eef9"),
+            (QPalette.ColorRole.Base,"#17243b"),(QPalette.ColorRole.Text,"#e7eef9"),
+            (QPalette.ColorRole.Button,"#1b2a45"),(QPalette.ColorRole.ButtonText,"#d9e4f4"),
+            (QPalette.ColorRole.Highlight,"#5b8cff"),(QPalette.ColorRole.HighlightedText,"#07101f")]:
             pal.setColor(role, QColor(col))
         app.setPalette(pal)
         w = FaceSlimApp(); w.show()

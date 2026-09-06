@@ -7,7 +7,7 @@ import sys
 import time
 import traceback
 
-VERSION = "1.28.0"
+VERSION = "1.29.0"
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 APP_DIR = os.path.dirname(PACKAGE_DIR) if os.path.basename(PACKAGE_DIR) == 'faceslim' else PACKAGE_DIR
 CONFIG_DIR = os.path.join(os.environ.get('APPDATA', os.path.expanduser('~')), '.faceslim')
