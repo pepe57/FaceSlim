@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "project": "FaceSlim",
+  "selectedConcepts": [
+    "direction-01-selected-profile-contour.png"
+  ],
+  "selectedMasters": [
+    "../faceslim-selected-master.png"
+  ],
+  "selectedSupportingConcepts": [
+    "direction-04-demo-portrait.png"
+  ],
+  "guidance": "These files preserve the original visual exploration. Use selectedConcepts to identify the approved direction. Production assets elsewhere in the repository remain the files used by the product."
+}

@@ -9,16 +9,16 @@
 </p>
 
 <p align="center">
-  <img alt="Version 1.29.0" src="https://img.shields.io/badge/version-1.29.0-5B8CFF">
-  <img alt="MIT license" src="https://img.shields.io/badge/license-MIT-4DD9A6">
+  <img alt="Version 1.29.1" src="https://img.shields.io/badge/version-1.29.1-5B8CFF">
+  <img alt="MIT source license" src="https://img.shields.io/badge/source_license-MIT-4DD9A6">
   <img alt="Windows, macOS, and Linux" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-67DBFF">
-  <img alt="Python 3.9 or newer" src="https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white">
+  <img alt="Python 3.10 or newer" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white">
 </p>
 
 <p align="center">
-  <a href="https://github.com/SysAdminDoc/FaceSlim/releases/latest"><strong>Download the Windows app</strong></a>
+  <a href="#run-from-source"><strong>Run FaceSlim</strong></a>
   &nbsp;•&nbsp;
-  <a href="#run-from-source"><strong>Run from source</strong></a>
+  <a href="https://github.com/SysAdminDoc/FaceSlim/releases"><strong>Release notes</strong></a>
   &nbsp;•&nbsp;
   <a href="#command-line"><strong>Use the CLI</strong></a>
 </p>
@@ -60,7 +60,9 @@ The comparison above is an actual CPU run using the built-in Moderate preset on 
 
 ### Windows app
 
-Download the latest portable build from [GitHub Releases](https://github.com/SysAdminDoc/FaceSlim/releases/latest). The app is a single executable and does not need an installer.
+Use the [source setup below](#run-from-source) for v1.29.1. The portable executable was rebuilt and tested locally, but a new binary download is on hold while the bundled PyQt5 and pyvirtualcam license combination is clarified. See [third-party notices](THIRD_PARTY_NOTICES.md). The source setup uses the updated dependencies and current branding.
+
+Older Windows executables are not code-signed. SmartScreen may warn when they are downloaded. Their checksums verify file integrity, not dependency currency or signing. They do not include the v1.29.1 dependency updates.
 
 On the first edit, FaceSlim downloads the MediaPipe face landmarker and selected parsing model. Later launches use the verified local cache.
 
@@ -86,7 +88,7 @@ python -m pip install -r requirements.txt
 python FaceSlim_v1.py
 ```
 
-Python 3.9 or newer is required. Python 3.11 is the current release host. See [Compatibility](#compatibility) before moving a production setup to a newer interpreter.
+Python 3.10 or newer is required. Python 3.11 is the tested release host. See [Compatibility](#compatibility) before moving a production setup to a newer interpreter.
 
 ## Controls
 
@@ -201,12 +203,18 @@ FFmpeg is optional. Install it when exported video should retain audio. An OBS-c
 
 | Python | Status |
 |---|---|
-| 3.9 to 3.11 | Supported. Python 3.11 builds the Windows release. |
+| 3.9 and earlier | Unsupported. The patched Pillow dependency requires Python 3.10 or newer. |
+| 3.10 | Minimum source runtime. Use Python 3.11 for the verified release setup. |
+| 3.11 | Tested runtime and Windows release host. |
 | 3.12 | Upgrade lane. Dependency imports and resolution are checked locally. |
 | 3.13 | Watch status. Do not use for release builds yet. |
 | 3.14 | Experimental. Package and ABI coverage is still changing. |
 
 ONNX Runtime 1.27.0 currently fails the Python 3.12 import smoke on the release machine, so runtime pins remain conservative.
+
+## Brand assets
+
+The asymmetric profile contour is the approved FaceSlim identity. The [untouched selected master](assets/brand/faceslim-selected-master.png) sits beside the production icon. The [concept archive](assets/brand/concepts/) preserves every reviewed direction plus the fictional demo portrait used for product evidence, and [selection.json](assets/brand/concepts/selection.json) records the exact approved files.
 
 ## Build and test
 
@@ -216,7 +224,7 @@ ONNX Runtime 1.27.0 currently fails the Python 3.12 import smoke on the release 
 .venv\Scripts\pyinstaller.exe FaceSlim.spec --noconfirm --clean
 ```
 
-The Windows executable is written to `dist\FaceSlim.exe`. The PyInstaller entry point and runtime hook both enable multiprocessing freeze support before model libraries load.
+The Windows executable is written to `dist\FaceSlim.exe`. The PyInstaller entry point and runtime hook both enable multiprocessing freeze support before model libraries load. The spec includes MediaPipe's dynamically loaded task library. Building locally does not clear the [binary redistribution hold](THIRD_PARTY_NOTICES.md#windows-binary-status).
 
 ## Responsible use
 
@@ -224,19 +232,19 @@ Edit media you own or have permission to change. Do not use FaceSlim to misrepre
 
 ## Troubleshooting
 
-**A model will not download**
+### A model will not download
 
 Open the model inventory in the desktop app or run `--list-models`. A corrupt cache is removed automatically and can be fetched again with `--redownload-model <key>`.
 
-**Preview is slow**
+### Preview is slow
 
 Set Preview Scale to 75% or 50%. CUDA can accelerate the TPS warp when PyTorch is installed with compatible GPU support.
 
-**A strong warp touches the background**
+### A strong warp touches the background
 
 Raise Background Protection. Add Matting Refine when hair and face boundaries need a tighter blend.
 
-**Video has no audio**
+### Video has no audio
 
 Install FFmpeg and make sure it is available on `PATH`. FaceSlim keeps the rendered video and reports the mux problem in `render.log` if audio copying fails.
 
@@ -244,4 +252,4 @@ Crash details are written to `crash.log`. Export and processing diagnostics are 
 
 ## License
 
-FaceSlim is released under the [MIT License](LICENSE). Issues and pull requests are welcome.
+FaceSlim's own source is released under the [MIT License](LICENSE). Dependencies retain their own terms. PyQt5 uses GPLv3, and pyvirtualcam declares GPLv2, so the MIT badge does not describe a combined Windows executable. Read the [third-party notices and binary-release status](THIRD_PARTY_NOTICES.md) before redistributing a packaged build. Issues and pull requests are welcome.

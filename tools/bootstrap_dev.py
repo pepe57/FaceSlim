@@ -87,8 +87,8 @@ def main():
     parser.add_argument("--skip-verify", action="store_true", help="Install requirements but skip compile/CLI smoke.")
     args = parser.parse_args()
 
-    if sys.version_info < (3, 9):
-        raise SystemExit("Python 3.9+ is required to create the FaceSlim environment.")
+    if sys.version_info < (3, 10):
+        raise SystemExit("Python 3.10+ is required to create the FaceSlim environment.")
     python = ensure_venv()
     if not args.skip_install:
         install_requirements(python)

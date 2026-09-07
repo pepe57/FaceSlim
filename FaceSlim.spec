@@ -1,11 +1,13 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+from PyInstaller.utils.hooks import collect_dynamic_libs
+
 block_cipher = None
 
 a = Analysis(
     ["FaceSlim_v1.py"],
     pathex=[],
-    binaries=[],
+    binaries=collect_dynamic_libs("mediapipe"),
     datas=[
         ("icon.png", "."),
         ("icon.ico", "."),
@@ -13,6 +15,7 @@ a = Analysis(
     hiddenimports=[
         "mediapipe",
         "mediapipe.tasks",
+        "mediapipe.tasks.c",
         "mediapipe.tasks.python",
         "mediapipe.tasks.python.vision",
         "onnxruntime",

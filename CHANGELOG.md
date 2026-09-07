@@ -1,5 +1,15 @@
 # Changelog
 
+## FaceSlim v1.29.1 (2026-09-07)
+
+- Preserved the approved profile-contour identity, untouched source master, alternate logo studies, and fictional demo portrait in a documented brand archive.
+- Refreshed the product captures and social card for this release, then added automated checks for the selected master and marketing image set.
+- Updated MediaPipe, Pillow, and Protobuf to patched releases after a local dependency audit found published advisories in the previous pins.
+- Consolidated the Windows runtime on one OpenCV distribution and rechecked the CPU portrait path in the packaged executable.
+- Updated the Windows packager to include MediaPipe's dynamically loaded native task library.
+- Raised the source-runtime minimum to Python 3.10 to match patched Pillow and corrected the download checksum instructions.
+- Clarified the source license and dependency terms. This is a source-only release; the locally tested Windows executable is held pending PyQt5 and pyvirtualcam redistribution clarification.
+
 ## FaceSlim v1.29.0 (2026-09-06)
 
 - Replaced the old flattened portrait logo with a small-size-tested app icon, complete PNG size set, and Windows ICO.

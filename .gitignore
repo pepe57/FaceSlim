@@ -4,6 +4,7 @@ CLAUDE.md
 *.md
 !README.md
 !CHANGELOG.md
+!THIRD_PARTY_NOTICES.md
 
 # Python
 __pycache__/

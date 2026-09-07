@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-FaceSlim v1.29.0 - AI Face Slimming & Reshaping Suite
+FaceSlim v1.29.1 - AI Face Slimming & Reshaping Suite
 Compatibility launcher for the modular FaceSlim package.
 """
 
@@ -11,13 +11,13 @@ multiprocessing.freeze_support()
 
 
 def _bootstrap():
-    if sys.version_info < (3, 9):
-        print("Python 3.9+ required")
+    if sys.version_info < (3, 10):
+        print("Python 3.10+ required")
         sys.exit(1)
     if getattr(sys, "frozen", False) or hasattr(sys, "_MEIPASS"):
         return
     required = {
-        'PyQt5': 'PyQt5', 'cv2': 'opencv-python', 'mediapipe': 'mediapipe',
+        'PyQt5': 'PyQt5', 'cv2': 'opencv-contrib-python', 'mediapipe': 'mediapipe',
         'numpy': 'numpy', 'scipy': 'scipy', 'PIL': 'Pillow',
         'onnxruntime': 'onnxruntime',
     }
